@@ -12,6 +12,12 @@ hydrophobicity = {
     'M': 1.9,  'N': -3.5, 'P': -1.6, 'Q': -3.5, 'R': -4.5,
     'S': -0.8, 'T': -0.7, 'V': 4.2,  'W': -0.9, 'Y': -1.3
 }
+polarity = {
+    'A': 0, 'C': 0, 'D': 1, 'E': 1, 'F': 0,
+    'G': 0, 'H': 1, 'I': 0, 'K': 1, 'L': 0,
+    'M': 0, 'N': 1, 'P': 0, 'Q': 1, 'R': 1,
+    'S': 1, 'T': 1, 'V': 0, 'W': 0, 'Y': 1
+}
 charge = {
     'A': 0, 'C': 0, 'D': -1, 'E': -1, 'F': 0,
     'G': 0, 'H': 1, 'I': 0, 'K': 1, 'L': 0,
@@ -25,12 +31,13 @@ molecular_weight = {
     'S': 105.1, 'T': 119.1, 'V': 117.1, 'W': 204.2, 'Y': 181.2
 }
 
+# Add polarity to available features
 feature_maps = {
     "hydrophobicity": hydrophobicity,
+    "polarity": polarity,
     "charge": charge,
     "molecular_weight": molecular_weight
 }
-
 
 def visualize_embeddings_3d(
     embedding_path,
