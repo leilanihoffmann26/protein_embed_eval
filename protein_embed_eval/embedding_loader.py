@@ -18,8 +18,8 @@ def load_model_and_tokenizer(model_type):
         raise ValueError(f"Unsupported model type: {model_type}")
     
     model_name = MODEL_CONFIGS[model_type]
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModel.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    model = AutoModel.from_pretrained(model_name, trust_remote_code=True, use_safetensors=True) 
     return tokenizer, model
 
 
@@ -53,8 +53,10 @@ def embed_sequence(sequence, model_type="ESM2"):
     return hidden.numpy()  # shape: (seq_len, hidden_size)
 
 
-def benchmark_all_models(sequence=DEFAULT_SEQUENCE, save=True):
-    """Compare embeddings across models using the same sequence."""
+import os
+
+def benchmark_all_models(sequence=DEFAULT_SEQUENCE, save=True, out_dir="examples"):
+    os.makedirs(out_dir, exist_ok=True)
     results = {}
     for model_type in MODEL_CONFIGS.keys():
         print(f"Embedding with {model_type}...")
@@ -62,7 +64,8 @@ def benchmark_all_models(sequence=DEFAULT_SEQUENCE, save=True):
         results[model_type] = emb
 
         if save:
-            np.save(f"{model_type}_embedding.npy", emb)
-            print(f"Saved: {model_type}_embedding.npy")
+            path = os.path.join(out_dir, f"{model_type}_embedding.npy")
+            np.save(path, emb)
+            print(f"Saved: {path}")
 
     return results
