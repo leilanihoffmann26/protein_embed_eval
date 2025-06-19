@@ -58,6 +58,7 @@ import os
 def benchmark_all_models(sequence=DEFAULT_SEQUENCE, save=True, out_dir="examples"):
     os.makedirs(out_dir, exist_ok=True)
     results = {}
+
     for model_type in MODEL_CONFIGS.keys():
         print(f"Embedding with {model_type}...")
         emb = embed_sequence(sequence, model_type)
