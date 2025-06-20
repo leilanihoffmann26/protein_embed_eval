@@ -1,0 +1,3 @@
+Model,Residue 1,Residue 2,Cosine Similarity
+ESM2,Glu35,Asp52,0.8312
+ProtBERT,Glu35,Asp52,0.6537
