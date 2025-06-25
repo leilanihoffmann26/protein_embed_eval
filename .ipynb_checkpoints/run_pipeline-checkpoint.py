@@ -4,8 +4,9 @@ import numpy as np
 import plotly.graph_objects as go
 from protein_embed_eval import embedding_loader, clustering, feature_computation, evaluation, visualization
 from protein_embed_eval.residue_similarity import cosine_similarity_active_sites, cosine_similarity_matrix
+from protein_embed_eval.compare_mutants import run_mutant_comparison
 
-# Handle optional command-line input
+# === Handle command-line input ===
 if len(sys.argv) > 1:
     sequence = sys.argv[1].strip().upper()
     is_default = False
@@ -14,15 +15,23 @@ else:
     sequence = "KVFGRCELAAAMKRHGLDNYRGYSLGNWVCAAKFESNFNTQATNRNTDGSTDYGILQINSR"
     is_default = True
 
-n_clusters = 4
-EMBED_DIR = "examples"
-OUTPUT_DIR = "outputs"
+if len(sys.argv) > 2:
+    output_subdir = sys.argv[2]
+else:
+    output_subdir = "wildtype" if is_default else "mutant"
+
+# === Setup directories ===
+OUTPUT_DIR = os.path.join("outputs", output_subdir)
+EMBED_DIR = os.path.join(OUTPUT_DIR, "embeddings")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+os.makedirs(EMBED_DIR, exist_ok=True)
 
-# Step 1: Generate embeddings
-results = embedding_loader.benchmark_all_models(sequence)
+n_clusters = 4
 
-# Step 2: Cluster, analyze, and visualize
+# === Step 1: Generate embeddings ===
+results = embedding_loader.benchmark_all_models(sequence, output_dir=EMBED_DIR)
+
+# === Step 2: Cluster, visualize, analyze ===
 label_dict = {}
 
 for model_type, _ in results.items():
@@ -34,7 +43,7 @@ for model_type, _ in results.items():
         print(f"Skipping {model_type}: embedding has {embedding.shape[0]} rows, expected {len(sequence)}.")
         continue
 
-    # Cosine similarity of Glu35 and Asp52
+    # Cosine similarity between Glu35 and Asp52
     try:
         sim = cosine_similarity_active_sites(embedding)
         print(f"Cosine similarity between Glu35 and Asp52: {sim:.4f}")
@@ -47,8 +56,9 @@ for model_type, _ in results.items():
     cluster_labels = clustering.cluster_embeddings(embedding_path, n_clusters=n_clusters, pca_dim=20)
     label_dict[model_type] = cluster_labels
 
+
     # Best feature + visualization
-    best_feature = evaluation.find_best_feature(sequence, cluster_labels).lower()
+    best_feature = evaluation.find_best_feature(sequence, cluster_labels).lower().replace(" ", "_")
     output_html = os.path.join(OUTPUT_DIR, f"{model_type}_tsne_by_{best_feature}.html")
     visualization.visualize_embeddings_3d(
         embedding_path=embedding_path,
@@ -56,6 +66,7 @@ for model_type, _ in results.items():
         feature=best_feature,
         output_html=output_html
     )
+
 
     # === Residue similarity heatmap ===
     sim_matrix = cosine_similarity_matrix(embedding)
@@ -97,6 +108,21 @@ for model_type, _ in results.items():
     fig.write_html(heatmap_html)
     print(f"Saved interactive heatmap to {heatmap_html}")
 
-# Step 3: ANOVA + confidence intervals
+# === Step 3: ANOVA + confidence intervals ===
 anova_df, ci_df = feature_computation.run_feature_analysis(sequence, label_dict, k=n_clusters)
 feature_computation.save_feature_stats(anova_df, ci_df, out_dir=OUTPUT_DIR)
+
+# === Step 4: If this is a mutant, compare to wildtype ===
+if output_subdir != "wildtype":
+    wildtype_dir = os.path.join("outputs", "wildtype", "embeddings")
+    if os.path.exists(wildtype_dir):
+        print("\n=== Comparing mutant to wildtype ===")
+        comparison_dir = os.path.join("outputs", output_subdir + "_comparison")
+        run_mutant_comparison(
+            wt_dir=wildtype_dir,
+            mutant_dir=EMBED_DIR,
+            sequence=sequence,
+            output_dir=comparison_dir
+        )
+    else:
+        print("⚠️ Wildtype embeddings not found. Skipping mutant comparison.")

@@ -4,7 +4,6 @@ import plotly.express as px
 import plotly.io as pio
 import os
 
-
 pio.renderers.default = 'notebook'  # Or 'browser' if outside notebooks
 
 # --- Feature dictionaries ---
@@ -33,7 +32,6 @@ molecular_weight = {
     'S': 105.1, 'T': 119.1, 'V': 117.1, 'W': 204.2, 'Y': 181.2
 }
 
-# Add polarity to available features
 feature_maps = {
     "hydrophobicity": hydrophobicity,
     "polarity": polarity,
@@ -49,15 +47,13 @@ def visualize_embeddings_3d(
     output_html=None,
     output_png=None
 ):
-    # Load embeddings
     embeddings = np.load(embedding_path)
 
-    # Get the feature mapping
-    if feature not in feature_maps:
+    normalized_feature = feature.replace(" ", "_").lower()
+    if normalized_feature not in feature_maps:
         raise ValueError(f"Feature '{feature}' not recognized. Choose from: {list(feature_maps.keys())}")
-    feature_dict = feature_maps[feature]
+    feature_dict = feature_maps[normalized_feature]
 
-    # Filter sequence + embeddings for valid residues
     clean_seq, clean_embeds, feature_vals = [], [], []
     for i, aa in enumerate(sequence):
         if aa in feature_dict and i < len(embeddings):
@@ -66,21 +62,18 @@ def visualize_embeddings_3d(
             feature_vals.append(feature_dict[aa])
 
     clean_embeds = np.array(clean_embeds)
-
-    # Reduce dimensions with t-SNE
     tsne = TSNE(n_components=3, random_state=42, perplexity=perplexity)
     tsne_3d = tsne.fit_transform(clean_embeds)
 
-    # Plot
     fig = px.scatter_3d(
         x=tsne_3d[:, 0],
         y=tsne_3d[:, 1],
         z=tsne_3d[:, 2],
         color=feature_vals,
         color_continuous_scale="Viridis",
-        labels={'color': feature.capitalize()},
+        labels={'color': normalized_feature.replace("_", " ").capitalize()},
         hover_name=[f"{aa}{i}" for i, aa in enumerate(clean_seq)],
-        title=f"3D t-SNE of Protein Embeddings Colored by {feature.capitalize()}"
+        title=f"3D t-SNE of Protein Embeddings Colored by {normalized_feature.replace('_', ' ').capitalize()}"
     )
 
     fig.show()

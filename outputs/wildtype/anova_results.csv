@@ -3,7 +3,7 @@ ESM2,Hydrophobicity,0.2193
 ESM2,Polarity,0.0
 ESM2,Charge,0.5845
 ESM2,Molecular Weight,0.0
-ProtBERT,Hydrophobicity,0.0329
-ProtBERT,Polarity,0.0066
-ProtBERT,Charge,0.5513
-ProtBERT,Molecular Weight,0.6976
+ProtBERT,Hydrophobicity,0.0484
+ProtBERT,Polarity,0.0268
+ProtBERT,Charge,0.3465
+ProtBERT,Molecular Weight,0.9828

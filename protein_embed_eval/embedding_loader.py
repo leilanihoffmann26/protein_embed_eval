@@ -55,8 +55,8 @@ def embed_sequence(sequence, model_type="ESM2"):
 
 import os
 
-def benchmark_all_models(sequence=DEFAULT_SEQUENCE, save=True, out_dir="examples"):
-    os.makedirs(out_dir, exist_ok=True)
+def benchmark_all_models(sequence=DEFAULT_SEQUENCE, save=True, output_dir="examples"):
+    os.makedirs(output_dir, exist_ok=True)
     results = {}
 
     for model_type in MODEL_CONFIGS.keys():
@@ -65,7 +65,7 @@ def benchmark_all_models(sequence=DEFAULT_SEQUENCE, save=True, out_dir="examples
         results[model_type] = emb
 
         if save:
-            path = os.path.join(out_dir, f"{model_type}_embedding.npy")
+            path = os.path.join(output_dir, f"{model_type}_embedding.npy")
             np.save(path, emb)
             print(f"Saved: {path}")
 

@@ -1,0 +1,33 @@
+Model,Feature,Cluster,Mean ± 95% CI
+ESM2,Hydrophobicity,Cluster 0,-2.1 ± 1.461
+ESM2,Hydrophobicity,Cluster 1,-0.4 ± 0.0
+ESM2,Hydrophobicity,Cluster 2,1.8 ± 0.0
+ESM2,Hydrophobicity,Cluster 3,-0.413 ± 1.164
+ESM2,Polarity,Cluster 0,0.882 ± 0.171
+ESM2,Polarity,Cluster 1,0.0 ± 0.0
+ESM2,Polarity,Cluster 2,0.0 ± 0.0
+ESM2,Polarity,Cluster 3,0.581 ± 0.184
+ESM2,Charge,Cluster 0,0.235 ± 0.225
+ESM2,Charge,Cluster 1,0.0 ± 0.0
+ESM2,Charge,Cluster 2,0.0 ± 0.0
+ESM2,Charge,Cluster 3,0.0 ± 0.212
+ESM2,Molecular Weight,Cluster 0,137.194 ± 9.749
+ESM2,Molecular Weight,Cluster 1,75.1 ± 0.0
+ESM2,Molecular Weight,Cluster 2,89.1 ± 0.0
+ESM2,Molecular Weight,Cluster 3,144.877 ± 9.268
+ProtBERT,Hydrophobicity,Cluster 0,-0.4 ± 0.0
+ProtBERT,Hydrophobicity,Cluster 1,-0.552 ± 1.397
+ProtBERT,Hydrophobicity,Cluster 2,-3.5 ± 0.0
+ProtBERT,Hydrophobicity,Cluster 3,0.3 ± 1.147
+ProtBERT,Polarity,Cluster 0,0.0 ± 0.0
+ProtBERT,Polarity,Cluster 1,0.522 ± 0.221
+ProtBERT,Polarity,Cluster 2,1.0 ± 0.0
+ProtBERT,Polarity,Cluster 3,0.48 ± 0.21
+ProtBERT,Charge,Cluster 0,0.0 ± 0.0
+ProtBERT,Charge,Cluster 1,0.087 ± 0.258
+ProtBERT,Charge,Cluster 2,-0.111 ± 0.256
+ProtBERT,Charge,Cluster 3,0.12 ± 0.181
+ProtBERT,Molecular Weight,Cluster 0,75.1 ± 0.0
+ProtBERT,Molecular Weight,Cluster 1,142.117 ± 14.103
+ProtBERT,Molecular Weight,Cluster 2,135.344 ± 4.737
+ProtBERT,Molecular Weight,Cluster 3,124.424 ± 12.574

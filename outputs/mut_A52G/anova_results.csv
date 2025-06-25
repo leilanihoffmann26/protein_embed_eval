@@ -1,0 +1,9 @@
+Model,Feature,ANOVA p-value
+ESM2,Hydrophobicity,0.0207
+ESM2,Polarity,0.0
+ESM2,Charge,0.4051
+ESM2,Molecular Weight,0.0
+ProtBERT,Hydrophobicity,0.0075
+ProtBERT,Polarity,0.0037
+ProtBERT,Charge,0.6538
+ProtBERT,Molecular Weight,0.0005
